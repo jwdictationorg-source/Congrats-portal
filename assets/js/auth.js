@@ -5,6 +5,21 @@ const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
 const googleBtn = document.getElementById('google-btn');
 
+const handleError = (error, btn, originalText) => {
+    let msg = error.message;
+    if (msg.includes('auth/invalid-credential')) msg = 'Neteisingas el. paštas arba slaptažodis.';
+    if (msg.includes('auth/email-already-in-use')) msg = 'Šis el. paštas jau naudojamas.';
+    if (msg.includes('auth/weak-password')) msg = 'Slaptažodis per silpnas (turi būti bent 6 simboliai).';
+    if (msg.includes('auth/popup-closed-by-user')) msg = 'Prisijungimo langas buvo uždarytas.';
+    
+    showToast(msg, 'error');
+    
+    if (btn) {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    }
+};
+
 if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -17,11 +32,10 @@ if (loginForm) {
 
         try {
             await loginUser(email, password);
-            window.location.href = 'dashboard.html';
+            showToast('Sėkmingai prisijungta!', 'success');
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
         } catch (error) {
-            showToast(error.message, 'error');
-            btn.textContent = 'Prisijungti';
-            btn.disabled = false;
+            handleError(error, btn, 'Prisijungti');
         }
     });
 }
@@ -39,22 +53,26 @@ if (registerForm) {
 
         try {
             await registerUser(email, password, name);
-            window.location.href = 'dashboard.html';
+            showToast('Sėkmingai užsiregistruota!', 'success');
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
         } catch (error) {
-            showToast(error.message, 'error');
-            btn.textContent = 'Registruotis';
-            btn.disabled = false;
+            handleError(error, btn, 'Registruotis');
         }
     });
 }
 
 if (googleBtn) {
     googleBtn.addEventListener('click', async () => {
+        const originalText = googleBtn.textContent;
+        googleBtn.textContent = 'Kraunama...';
+        googleBtn.disabled = true;
+        
         try {
             await loginWithGoogle();
-            window.location.href = 'dashboard.html';
+            showToast('Sėkmingai prisijungta!', 'success');
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
         } catch (error) {
-            showToast(error.message, 'error');
+            handleError(error, googleBtn, originalText);
         }
     });
 }
