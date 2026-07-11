@@ -1,9 +1,10 @@
-import { registerUser, loginUser, loginWithGoogle } from '../../firebase/authentication.js';
+import { registerUser, loginUser, loginWithGoogle, loginWithApple } from '../../firebase/authentication.js';
 import { showToast } from './app.js';
 
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
 const googleBtn = document.getElementById('google-btn');
+const appleBtn = document.getElementById('apple-btn');
 
 const handleError = (error, btn, originalText) => {
     let msg = error.message;
@@ -15,7 +16,7 @@ const handleError = (error, btn, originalText) => {
     showToast(msg, 'error');
     
     if (btn) {
-        btn.textContent = originalText;
+        btn.innerHTML = originalText;
         btn.disabled = false;
     }
 };
@@ -26,6 +27,7 @@ if (loginForm) {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const btn = document.getElementById('login-btn');
+        const originalText = btn.innerHTML;
         
         btn.textContent = 'Kraunama...';
         btn.disabled = true;
@@ -35,7 +37,7 @@ if (loginForm) {
             showToast('Sėkmingai prisijungta!', 'success');
             setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
         } catch (error) {
-            handleError(error, btn, 'Prisijungti');
+            handleError(error, btn, originalText);
         }
     });
 }
@@ -47,6 +49,7 @@ if (registerForm) {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const btn = document.getElementById('register-btn');
+        const originalText = btn.innerHTML;
         
         btn.textContent = 'Kraunama...';
         btn.disabled = true;
@@ -56,14 +59,14 @@ if (registerForm) {
             showToast('Sėkmingai užsiregistruota!', 'success');
             setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
         } catch (error) {
-            handleError(error, btn, 'Registruotis');
+            handleError(error, btn, originalText);
         }
     });
 }
 
 if (googleBtn) {
     googleBtn.addEventListener('click', async () => {
-        const originalText = googleBtn.textContent;
+        const originalText = googleBtn.innerHTML;
         googleBtn.textContent = 'Kraunama...';
         googleBtn.disabled = true;
         
@@ -73,6 +76,22 @@ if (googleBtn) {
             setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
         } catch (error) {
             handleError(error, googleBtn, originalText);
+        }
+    });
+}
+
+if (appleBtn) {
+    appleBtn.addEventListener('click', async () => {
+        const originalText = appleBtn.innerHTML;
+        appleBtn.textContent = 'Kraunama...';
+        appleBtn.disabled = true;
+        
+        try {
+            await loginWithApple();
+            showToast('Sėkmingai prisijungta!', 'success');
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
+        } catch (error) {
+            handleError(error, appleBtn, originalText);
         }
     });
 }
