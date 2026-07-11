@@ -25,7 +25,9 @@ export const registerUser = async (email, password, name) => {
             role: "user",
             createdAt: new Date().toISOString()
         });
-    } catch (e) {}
+    } catch (e) {
+        console.error(e);
+    }
     
     return user;
 };
@@ -50,7 +52,9 @@ export const loginWithGoogle = async () => {
                 createdAt: new Date().toISOString()
             });
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error(e);
+    }
     
     return user;
 };
@@ -71,7 +75,9 @@ export const loginWithApple = async () => {
                 createdAt: new Date().toISOString()
             });
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error(e);
+    }
     
     return user;
 };
