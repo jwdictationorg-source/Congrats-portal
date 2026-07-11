@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prisijungti | Bendruomenės Portalas</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        window.addEventListener('error', function(e) {
+            alert("Klaida: " + e.message + "\nFailas: " + e.filename);
+        });
+        window.addEventListener('unhandledrejection', function(e) {
+            alert("Klaida (Nematoma): " + e.reason);
+        });
+    </script>
 </head>
 <body>
     <div id="toast-container"></div>
