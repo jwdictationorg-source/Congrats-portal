@@ -3,6 +3,7 @@ import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     GoogleAuthProvider, 
+    OAuthProvider,
     signInWithPopup, 
     signOut, 
     onAuthStateChanged 
@@ -10,6 +11,7 @@ import {
 import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 const googleProvider = new GoogleAuthProvider();
+const appleProvider = new OAuthProvider('apple.com');
 
 export const registerUser = async (email, password, name) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -43,6 +45,27 @@ export const loginWithGoogle = async () => {
                 uid: user.uid,
                 name: user.displayName || "Google Vartotojas",
                 email: user.email,
+                role: "user",
+                avatar: user.photoURL || "",
+                createdAt: new Date().toISOString()
+            });
+        }
+    } catch (e) {}
+    
+    return user;
+};
+
+export const loginWithApple = async () => {
+    const result = await signInWithPopup(auth, appleProvider);
+    const user = result.user;
+    
+    try {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (!userDoc.exists()) {
+            await setDoc(doc(db, "users", user.uid), {
+                uid: user.uid,
+                name: user.displayName || "Apple Vartotojas",
+                email: user.email || "",
                 role: "user",
                 avatar: user.photoURL || "",
                 createdAt: new Date().toISOString()
