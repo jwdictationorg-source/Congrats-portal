@@ -35,7 +35,7 @@ if (loginForm) {
         try {
             await loginUser(email, password);
             showToast('Sėkmingai prisijungta!', 'success');
-            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
         } catch (error) {
             handleError(error, btn, originalText);
         }
@@ -57,7 +57,7 @@ if (registerForm) {
         try {
             await registerUser(email, password, name);
             showToast('Sėkmingai užsiregistruota!', 'success');
-            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
         } catch (error) {
             handleError(error, btn, originalText);
         }
@@ -73,7 +73,7 @@ if (googleBtn) {
         try {
             await loginWithGoogle();
             showToast('Sėkmingai prisijungta!', 'success');
-            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
         } catch (error) {
             handleError(error, googleBtn, originalText);
         }
@@ -89,7 +89,7 @@ if (appleBtn) {
         try {
             await loginWithApple();
             showToast('Sėkmingai prisijungta!', 'success');
-            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
         } catch (error) {
             handleError(error, appleBtn, originalText);
         }
